@@ -12,20 +12,35 @@
                     <name>AMSSMOKETESTFAKE_MASTER</name>
                     <displayName>AMSSMOKETESTFAKE Master</displayName>
                     <category>MASTER</category>
-                    <cardinality>1</cardinality>
-		                <timelineAppid>AMSSMOKETESTFAKE</timelineAppid>
+		    <cardinality>ALL</cardinality>
+		    <auto-deploy>
+            		<enabled>true</enabled>
+          	    </auto-deploy>
+		    <timelineAppid>AMSSMOKETESTFAKE</timelineAppid>
                     <commandScript>
                         <script>scripts/master.py</script>
                         <scriptType>PYTHON</scriptType>
                         <timeout>600</timeout>
                     </commandScript>
+		    <logs>
+            		<log>
+              		    <logId>filesystem-monitor</logId>
+              		    <primary>true</primary>
+           		 </log>
+         	     </logs>
                 </component>
             </components>
             <osSpecifics>
                 <osSpecific>
                     <osFamily>any</osFamily>  <!-- note: use osType rather than osFamily for Ambari 1.5.0 and 1.5.1 -->
+		        <packages>
+			    <package>python-requests.noarch</package>
+			</packages>
                 </osSpecific>
             </osSpecifics>
+            <configuration-dependencies>
+                <config-type>category</config-type>
+            </configuration-dependencies>
         </service>
     </services>
 </metainfo>

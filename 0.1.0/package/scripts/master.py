@@ -11,9 +11,14 @@ class Master(Script):
       print("killing process")
       f = open("/tmp/filesystem.pid", "r")
       os.kill(int(f.read()), signal.SIGTERM)
+      print("process killed")
     except IOError:
       print("pid file non-existent, no process to kill")
-    os.unlink("/tmp/filesystem.pid")
+    try:
+      os.unlink("/tmp/filesystem.pid")
+      print("pid file unlinked")
+    except OSError:
+      print("no pid file to unlink")
   def start(self, env):
     print 'Start the Sample Srv Master';
     call("python /var/lib/ambari-server/resources/common-services/AMSSMOKETESTFAKE/0.1.0/package/scripts/filesystem_monitor.py", wait_for_finish=False, logoutput=True, stdout='/var/log/amssmoketestfake/amssmoketestfake.out', stderr='/var/log/amssmoketestfake/amssmoketestfake.err')
