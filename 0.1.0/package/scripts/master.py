@@ -21,7 +21,7 @@ class Master(Script):
       print("no pid file to unlink")
   def start(self, env):
     print 'Start the Sample Srv Master';
-    call("python /var/lib/ambari-server/resources/common-services/AMSSMOKETESTFAKE/0.1.0/package/scripts/filesystem_monitor.py", wait_for_finish=False, logoutput=True, stdout='/var/log/amssmoketestfake/amssmoketestfake.out', stderr='/var/log/amssmoketestfake/amssmoketestfake.err')
+    call("python /var/lib/ambari-server/resources/common-services/filesystem-monitor/0.1.0/package/scripts/filesystem_monitor.py", wait_for_finish=False, logoutput=True, stdout='/var/log/filesystem-monitor/filesystem-monitor.out', stderr='/var/log/filesystem-monitor/filesystem-monitor.err')
    
   def status(self, env):
     print 'Status of the Sample Srv Master';

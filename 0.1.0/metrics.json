@@ -1,5 +1,5 @@
 {
-  "AMSSMOKETESTFAKE_MASTER": {
+  "Transmitter": {
     "Component": [{
         "type": "ganglia",
         "metrics": {
@@ -16,6 +16,16 @@
             },
             "metrics/c6401.ambari.apache.org.home": {
               "metric": "c6401.ambari.apache.org.home",
+              "pointInTime": false,
+              "temporal": true
+            },
+            "metrics/c6402.ambari.apache.org.home": {
+              "metric": "c6402.ambari.apache.org.home",
+              "pointInTime": false,
+              "temporal": true
+            },
+            "metrics/c6403.ambari.apache.org.home": {
+              "metric": "c6403.ambari.apache.org.home",
               "pointInTime": false,
               "temporal": true
             }

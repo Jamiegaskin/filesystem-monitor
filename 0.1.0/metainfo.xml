@@ -3,20 +3,20 @@
     <schemaVersion>2.0</schemaVersion>
     <services>
         <service>
-            <name>AMSSMOKETESTFAKE</name>
-            <displayName>AMSSMOKETESTFAKE</displayName>
-            <comment>Service definition for AMSSMOKETESTFAKE</comment>
+            <name>filesystem-monitor</name>
+            <displayName>Filesystem Monitor</displayName>
+            <comment>A custom tool to monitor folder sizes on hosts in Ambari</comment>
             <version>0.1.0</version>
             <components>
                 <component>
-                    <name>AMSSMOKETESTFAKE_MASTER</name>
-                    <displayName>AMSSMOKETESTFAKE Master</displayName>
+                    <name>Transmitter</name>
+                    <displayName>Transmitter</displayName>
                     <category>MASTER</category>
 		    <cardinality>ALL</cardinality>
 		    <auto-deploy>
             		<enabled>true</enabled>
           	    </auto-deploy>
-		    <timelineAppid>AMSSMOKETESTFAKE</timelineAppid>
+		    <timelineAppid>filesystem-monitor</timelineAppid>
                     <commandScript>
                         <script>scripts/master.py</script>
                         <scriptType>PYTHON</scriptType>
@@ -39,7 +39,7 @@
                 </osSpecific>
             </osSpecifics>
             <configuration-dependencies>
-                <config-type>category</config-type>
+                <config-type>filesystem-config</config-type>
             </configuration-dependencies>
         </service>
     </services>
