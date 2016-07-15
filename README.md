@@ -20,7 +20,7 @@ Where HDP_VERSION is your version of HDP (I used 2.4).
 Move the files into place.
 ```
 mv filesystem-monitor/metainfo.xml /var/lib/ambari-server/resources/stacks/HDP/HDP_VERSION/services/FILESYSTEM_MONITOR/metainfo.xml
-mv filesystem-monitor/0.1.0 /var/lib/ambari-server/resources/common-services/filesystem-monitor/0.1.0
+mv filesystem-monitor/0.1.0 /var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR/0.1.0
 ```
 
 Restart Ambari Server.
