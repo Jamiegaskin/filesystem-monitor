@@ -3,8 +3,13 @@ import os
 import time
 import requests
 
-REFRESH_INTERVAL = 10 #seconds
-METRICS_URL = "http://c6403.ambari.apache.org:6188/ws/v1/timeline/metrics"
+print("Starting up")
+"""
+ARGS: refresh_interval (seconds), metrics hostname, files-to-track
+"""
+print(sys.argv)
+REFRESH_INTERVAL = int(sys.argv[1]) #seconds
+METRICS_URL = "http://{0}:6188/ws/v1/timeline/metrics".format(sys.argv[2])
 METRIC_TEMPLATE = ('{{'
     '"metrics": ['
         '{{'
@@ -20,7 +25,7 @@ METRIC_TEMPLATE = ('{{'
         ']'
 '}}')
 HEADER = {'Content-Type': 'application/json'}
-files = ["/home"]
+files = sys.argv[3:]
 folder_memoizer = {}
 status = "RUNNING"
 try:
@@ -67,16 +72,18 @@ def send_to_metrics(filename, size):
 pid = str(os.getpid())
 pidfile = "/tmp/filesystem.pid"
 file(pidfile, 'w').write(pid)
+
+print("Starting metrics loop")
+
 while(True):
     start = time.time()
     clear_memoizer()
     for filename in files:
         size = folder_size_memoize(filename)
         try:
+            #print("sending to metrics: ", filename, METRICS_URL)
             send_to_metrics(filename, size)
-            status = "RUNNING"
         except:
-            status = "UNABLE_TO_CONNECT"
-            print("exception handling TODO - probably will go to alerts eventually", sys.exc_info()[0])
+            print("exception handling TODO - probably will go to alerts eventually", sys.exc_info())
     end = time.time()
     time.sleep(REFRESH_INTERVAL - (end - start))

@@ -14,14 +14,14 @@
             {
               "name": "FakeMetric",
               "metric_path": "metrics/FakeMetric",
-              "service_name": "AMSSMOKETESTFAKE",
-              "component_name": "AMSSMOKETESTFAKE_MASTER"
+              "service_name": "filesystem-monitor",
+              "component_name": "Transmitter"
             }
           ],
           "values": [
             {
               "name": "Fake Metric",
-              "value": "${FakeMetric}"
+              "value": "${c6401.ambari.apache.org.home}"
             }
           ],
           "properties": {

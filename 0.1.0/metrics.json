@@ -1,5 +1,5 @@
 {
-  "Transmitter": {
+  "TRANSMITTER": {
     "Component": [{
         "type": "ganglia",
         "metrics": {
