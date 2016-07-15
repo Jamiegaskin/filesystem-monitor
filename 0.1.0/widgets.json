@@ -1,9 +1,9 @@
 {
   "layouts": [
     {
-      "layout_name": "default_amssmoketestfake_dashboard",
-      "display_name": "Standard AMSSMOKETESTFAKE Dashboard",
-      "section_name": "AMSSMOKETESTFAKE_SUMMARY",
+      "layout_name": "default_filesystem_monitor_dashboard",
+      "display_name": "Standard FILESYSTEM_MONITOR Dashboard",
+      "section_name": "FILESYSTEM_MONITOR_SUMMARY",
       "widgetLayoutInfo": [
         {
           "widget_name": "FakeMetric",
@@ -14,14 +14,14 @@
             {
               "name": "FakeMetric",
               "metric_path": "metrics/FakeMetric",
-              "service_name": "filesystem-monitor",
-              "component_name": "Transmitter"
+              "service_name": "FILESYSTEM_MONITOR",
+              "component_name": "TRANSMITTER"
             }
           ],
           "values": [
             {
               "name": "Fake Metric",
-              "value": "${c6401.ambari.apache.org.home}"
+              "value": "${FakeMetric}"
             }
           ],
           "properties": {
