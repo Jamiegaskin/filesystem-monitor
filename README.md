@@ -42,4 +42,5 @@ Start:
 curl -u ADMIN_USER:ADMIN_PASSWORD -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"context":"Start Service"},"Body":{"ServiceInfo":{"state":"STARTED"}}}' http://AMBARI_SERVER:8080/api/v1/clusters/CLUSTER_NAME/services/FILESYSTEM_MONITOR
 ```
 - Widgets view still being worked on
+
 *Code adapted from Bryan Bende's tutorials and examples*
