@@ -8,6 +8,8 @@ From the ambari server host, get the files.
 ```
 git clone https://github.com/Jamiegaskin/filesystem-monitor
 ```
+If you don't have git, it's as easy as `yum install git` on Centos
+
 Create the directories.
 ```
 mkdir /var/lib/ambari-server/resources/stacks/HDP/HDP_VERSION/services/FILESYSTEM_MONITOR
