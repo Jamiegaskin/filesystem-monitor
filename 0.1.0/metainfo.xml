@@ -3,7 +3,7 @@
     <schemaVersion>2.0</schemaVersion>
     <services>
         <service>
-            <name>filesystem-monitor</name>
+            <name>FILESYSTEM_MONITOR</name>
             <displayName>Filesystem Monitor</displayName>
             <comment>A custom tool to monitor folder sizes on hosts in Ambari</comment>
             <version>0.1.0</version>
