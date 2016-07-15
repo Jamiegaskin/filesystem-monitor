@@ -29,7 +29,7 @@ ambari-server restart
 Installation can now be completed by adding the service "Filesystem Monitor". The only configuration you **must** set immediately is the host name for the Ambari Metrics Collector.
 
 ## Known issues
-Start/stop from the UI don't function. Can start or stop individual components or all by using the Ambari API.
+- Start/stop from the UI don't function. Can start or stop individual components or all by using the Ambari API.
 Stop:
 ``` 
 curl -u ADMIN_USER:ADMIN_PASSWORD -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"context":"Stop Service"},"Body":{"ServiceInfo":{"state":"INSTALLED"}}}' http://AMBARI_SERVER:8080/api/v1/clusters/CLUSTER_NAME/services/FILESYSTEM_MONITOR
@@ -38,4 +38,5 @@ Start:
 ``` 
 curl -u ADMIN_USER:ADMIN_PASSWORD -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"context":"Start Service"},"Body":{"ServiceInfo":{"state":"STARTED"}}}' http://AMBARI_SERVER:8080/api/v1/clusters/CLUSTER_NAME/services/FILESYSTEM_MONITOR
 ```
+- Widgets view still being worked on
 *Code adapted from Bryan Bende's tutorials and examples*
