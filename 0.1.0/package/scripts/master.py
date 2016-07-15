@@ -2,7 +2,8 @@ import sys
 from resource_management import *
 class Master(Script):
   def install(self, env):
-    print 'Install the Sample Srv Master';
+    print 'Install the Filesystem Master';
+    self.install_packages(env)
   def stop(self, env):
     print 'Stop the Filesystem Master';
   def start(self, env):
