@@ -34,7 +34,7 @@ class Transmitter(Script):
     print 'Start the fileystem monitor';
     #self.configure(env) # for safety
     config = Script.get_config()['configurations']['filesystem-config']
-    call_list = ["python", "/var/lib/ambari-agent/cache/common-services/filesystem-monitor/0.1.0/package/scripts/filesystem_monitor.py", str(config['check_interval']), config['metrics_host']] + config['folders'].split()
+    call_list = ["python", "/var/lib/ambari-agent/cache/common-services/FILESYSTEM_MONITOR/0.1.0/package/scripts/filesystem_monitor.py", str(config['check_interval']), config['metrics_host']] + config['folders'].split()
     call(call_list, wait_for_finish=False, logoutput=True, stdout='/var/log/filesystem-monitor/filesystem-monitor.out', stderr='/var/log/filesystem-monitor/filesystem-monitor.err')
    
   def status(self, env):
