@@ -30,4 +30,6 @@ ambari-server restart
 
 Installation can now be completed by adding the service "Filesystem Monitor". The only configuration you **must** set immediately is the host name for the Ambari Metrics Collector.
 
+By default, all hosts are tracking the /home directory. While adding more directories to track is as easy as modifying the configuration and restarting the service, in order to register them as metrics for visuals, you need to edit the metrics.json file at /var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR/0.1.0. The naming scheme is HOSTNAME + FILEPATH with all / replaced with . in the filepath (this seemed to help the widgets make the api calls). I've been simply storing the metric at metrics/filesystem/METRIC_NAME. You should be able to copy-paste the /home section and do a simple replace. The Ambari Server will need restarting to pick these changes up. The widgets can be updated manually, but can also be created from the UI.
+
 *Code adapted from Bryan Bende's tutorials and examples*
