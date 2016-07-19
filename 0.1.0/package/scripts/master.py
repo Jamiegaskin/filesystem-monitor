@@ -8,7 +8,7 @@ class Master(Script):
     print 'Stop the Filesystem Master';
   def start(self, env):
     print 'Start the Filesystem Master';
-     
+
   def status(self, env):
     print 'Status of the Filesystem Master';
   def configure(self, env):

@@ -5,6 +5,7 @@ from resource_management import *
 
 VERSION = "0.1.0"
 DEFAULT_MAX_SIZE = 2**30 #1 GB
+DEFAULT_FOLDER = 'home'
 
 WIDGETS_START = """{
   "layouts": [
@@ -91,7 +92,6 @@ def init_metrics(hosts, file_name):
 class Transmitter(Script):
   def install(self, env):
     Execute("yum -y install python-requests.noarch") #putting it as a dependency in the metainfo.xml wasn't working
-    print("Host: ", open("/etc/hostname").read())
     if not os.path.exists("/var/log/filesystem-monitor"):
       print("No /var/log/filesystem-monitor - creating")
       try:
@@ -99,6 +99,14 @@ class Transmitter(Script):
         print("success creating /var/log/filesystem-monitor")
       except:
         print("creating /var/log/filesystem-monitor failed")
+
+    print("define widgets and metrics if host")
+    host = open("/etc/hostname").read().strip()
+    configs = Script.get_config()['clusterHostInfo']
+    if configs['ambari_server_host'] == host:
+        init_widgets(configs['all_hosts'], DEFAULT_FOLDER, DEFAULT_MAX_SIZE)
+        init_metrics(configs['all_hosts'], DEFAULT_FOLDER)
+
     print("done with custom installation step")
   def stop(self, env):
     try:
