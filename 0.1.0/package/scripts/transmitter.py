@@ -52,8 +52,8 @@ METRICS_START = """{
         "type": "ganglia",
         "metrics": {
           "default": {"""
-METRICS_TEMPLATE = """"
-                metrics/filesystem/{0}.{1}": {{
+METRICS_TEMPLATE = """
+                "metrics/filesystem/{0}.{1}": {{
                   "metric": "{0}.{1}",
                   "pointInTime": true,
                   "temporal": true
