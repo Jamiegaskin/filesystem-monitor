@@ -29,7 +29,7 @@ WIDGETS_TEMPLATE = """
           "metrics": [
             {{
               "name": "{0}.{1}",
-              "metric_path": "metrics/filesystem/{0}.{1}",
+              "metric_path": "metrics/filesystem/{0}.{1}._avg",
               "service_name": "FILESYSTEM_MONITOR",
               "component_name": "TRANSMITTER"
             }}
@@ -80,6 +80,7 @@ def init_widgets(hosts, file_name, size):
 
 def init_metrics(hosts, file_name):
     write_str = METRICS_START
+    hosts.insert(0, "dummy")
     for host in hosts:
         write_str += METRICS_TEMPLATE.format(host, file_name)
     #remove last comma
