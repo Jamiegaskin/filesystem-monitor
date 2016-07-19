@@ -28,8 +28,8 @@ WIDGETS_TEMPLATE = """
           "is_visible": true,
           "metrics": [
             {{
-              "name": "{0}.ambari.apache.org.{1}",
-              "metric_path": "metrics/filesystem/{0}.ambari.apache.org.{1}",
+              "name": "{0}.{1}",
+              "metric_path": "metrics/filesystem/{0}.{1}",
               "service_name": "FILESYSTEM_MONITOR",
               "component_name": "TRANSMITTER"
             }}
@@ -37,7 +37,7 @@ WIDGETS_TEMPLATE = """
           "values": [
             {{
               "name": "/{1} Space Utilization",
-              "value": "${{{0}.ambari.apache.org.{1}/{2}}}"
+              "value": "${{{0}.{1}/{2}}}"
             }}
           ],
           "properties": {{
@@ -53,8 +53,8 @@ METRICS_START = """{
         "metrics": {
           "default": {"""
 METRICS_TEMPLATE = """"
-                metrics/{0}.ambari.apache.org.{1}": {{
-                  "metric": "{0}.ambari.apache.org.{1}",
+                metrics/{0}.{1}": {{
+                  "metric": "{0}.{1}",
                   "pointInTime": true,
                   "temporal": true
                 }},"""
