@@ -20,30 +20,30 @@ WIDGETS_END = """      ]
   ]
 }
 """
-WIDGETS_TEMPLATE = """{
+WIDGETS_TEMPLATE = """{{
           "widget_name": "{0} /{1} Space Usage",
           "description": "Percentage of available space used in /{1}.",
           "widget_type": "GAUGE",
           "is_visible": true,
           "metrics": [
-            {
+            {{
               "name": "{0}.ambari.apache.org.{1}",
               "metric_path": "metrics/filesystem/{0}.ambari.apache.org.{1}",
               "service_name": "FILESYSTEM_MONITOR",
               "component_name": "TRANSMITTER"
-            }
+            }}
           ],
           "values": [
-            {
+            {{
               "name": "/{1} Space Utilization",
               "value": "${{{0}.ambari.apache.org.{1}/{2}}}"
-            }
+            }}
           ],
-          "properties": {
+          "properties": {{
             "warning_threshold": "0.5",
             "error_threshold": "0.8"
-          }
-        },
+          }}
+        }},
 """
 
 METRICS_START = """{
@@ -53,11 +53,11 @@ METRICS_START = """{
         "metrics": {
           "default": {
                 """
-METRICS_TEMPLATE = """"metrics/{0}.ambari.apache.org.{1}": {
+METRICS_TEMPLATE = """"metrics/{0}.ambari.apache.org.{1}": {{
   "metric": "{0}.ambari.apache.org.{1}",
   "pointInTime": true,
   "temporal": true
-},
+}},
 """
 METRICS_END = """          }
         }
@@ -103,7 +103,9 @@ class Transmitter(Script):
     print("define widgets and metrics if host")
     host = open("/etc/hostname").read().strip()
     configs = Script.get_config()['clusterHostInfo']
-    if configs['ambari_server_host'] == host:
+    print("this machine and ambari server host", host, configs['ambari_server_host'])
+    if configs['ambari_server_host'][0] == host:
+        print("initializing widgets and metrics")
         init_widgets(configs['all_hosts'], DEFAULT_FOLDER, DEFAULT_MAX_SIZE)
         init_metrics(configs['all_hosts'], DEFAULT_FOLDER)
 
