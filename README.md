@@ -10,18 +10,13 @@ git clone https://github.com/Jamiegaskin/filesystem-monitor
 ```
 If you don't have git, it's as easy as `yum install git` on Centos
 
-Create the directories.
+Copy the files into place.
 ```
-mkdir /var/lib/ambari-server/resources/stacks/HDP/HDP_VERSION/services/FILESYSTEM_MONITOR
-mkdir /var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR
+cp -R filesystem-monitor/FILESYSTEM_MONITOR /var/lib/ambari-server/resources/stacks/HDP/HDP_VERSION/services
+cp -R filesystem-monitor/0.1.0 /var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR
 ```
-Where HDP_VERSION is your version of HDP (I used 2.4).
 
-Move the files into place.
-```
-mv filesystem-monitor/metainfo.xml /var/lib/ambari-server/resources/stacks/HDP/HDP_VERSION/services/FILESYSTEM_MONITOR/metainfo.xml
-mv filesystem-monitor/0.1.0 /var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR/0.1.0
-```
+Where HDP_VERSION is your version of HDP (I used 2.4).
 
 Restart Ambari Server.
 ```
