@@ -86,4 +86,4 @@ while(True):
         except:
             print("exception handling TODO - probably will go to alerts eventually", sys.exc_info())
     end = time.time()
-    time.sleep(REFRESH_INTERVAL - (end - start))
+    time.sleep(max(REFRESH_INTERVAL - (end - start), 0))

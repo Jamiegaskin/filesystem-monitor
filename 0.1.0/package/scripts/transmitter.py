@@ -53,7 +53,7 @@ METRICS_START = """{
         "metrics": {
           "default": {"""
 METRICS_TEMPLATE = """"
-                metrics/{0}.{1}": {{
+                metrics/filesystem/{0}.{1}": {{
                   "metric": "{0}.{1}",
                   "pointInTime": true,
                   "temporal": true

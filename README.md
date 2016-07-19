@@ -12,8 +12,8 @@ If you don't have git, it's as easy as `yum install git` on Centos
 
 Copy the files into place.
 ```
-cp -R filesystem-monitor/FILESYSTEM_MONITOR /var/lib/ambari-server/resources/stacks/HDP/HDP_VERSION/services
-cp -R filesystem-monitor/0.1.0 /var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR
+cp -R filesystem-monitor/FILESYSTEM_MONITOR /var/lib/ambari-server/resources/stacks/HDP/HDP_VERSION/services/
+cp -R filesystem-monitor/0.1.0 /var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR/
 ```
 
 Where HDP_VERSION is your version of HDP (I used 2.4). At this point you should have:
