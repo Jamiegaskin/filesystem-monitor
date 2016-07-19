@@ -13,14 +13,15 @@ WIDGETS_START = """{
       "layout_name": "default_filesystem_monitor_dashboard",
       "display_name": "Standard FILESYSTEM_MONITOR Dashboard",
       "section_name": "FILESYSTEM_MONITOR_SUMMARY",
-      "widgetLayoutInfo": [
-            """
-WIDGETS_END = """      ]
+      "widgetLayoutInfo": ["""
+WIDGETS_END = """
+      ]
     }
   ]
 }
 """
-WIDGETS_TEMPLATE = """{{
+WIDGETS_TEMPLATE = """
+        {{
           "widget_name": "{0} /{1} Space Usage",
           "description": "Percentage of available space used in /{1}.",
           "widget_type": "GAUGE",
@@ -43,23 +44,22 @@ WIDGETS_TEMPLATE = """{{
             "warning_threshold": "0.5",
             "error_threshold": "0.8"
           }}
-        }},
-"""
+        }},"""
 
 METRICS_START = """{
   "TRANSMITTER": {
     "Component": [{
         "type": "ganglia",
         "metrics": {
-          "default": {
-                """
-METRICS_TEMPLATE = """"metrics/{0}.ambari.apache.org.{1}": {{
-  "metric": "{0}.ambari.apache.org.{1}",
-  "pointInTime": true,
-  "temporal": true
-}},
-"""
-METRICS_END = """          }
+          "default": {"""
+METRICS_TEMPLATE = """"
+                metrics/{0}.ambari.apache.org.{1}": {{
+                  "metric": "{0}.ambari.apache.org.{1}",
+                  "pointInTime": true,
+                  "temporal": true
+                }},"""
+METRICS_END = """
+          }
         }
     }]
   }
