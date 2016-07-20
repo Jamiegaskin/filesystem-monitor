@@ -108,7 +108,7 @@ class Transmitter(Script):
     all_configs = Script.get_config()
     configs = all_configs['clusterHostInfo']
     folders = all_configs['configurations']['filesystem-config']['folders'].split(" ")
-    folders = [x.replace('/', '') for x in folders]
+    folders = [x.replace('/', '.') for x in folders]
     print("this machine and ambari server host", host, configs['ambari_server_host'])
     if configs['ambari_server_host'][0] == host:
         print("initializing widgets and metrics")
@@ -146,7 +146,7 @@ class Transmitter(Script):
     all_configs = Script.get_config()
     configs = all_configs['clusterHostInfo']
     folders = all_configs['configurations']['filesystem-config']['folders'].split(" ")
-    folders = [x.replace('/', '') for x in folders]
+    folders = [x.replace('/', '.') for x in folders]
     host = open("/etc/hostname").read().strip()
     if configs['ambari_server_host'][0] == host:
         init_metrics(configs['all_hosts'], folders)
