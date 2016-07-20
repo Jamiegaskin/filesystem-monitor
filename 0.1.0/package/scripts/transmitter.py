@@ -37,7 +37,7 @@ WIDGETS_TEMPLATE = """
           "values": [
             {{
               "name": "/{1} Space Utilization",
-              "value": "${{{0}.{1}}"
+              "value": "${{{0}.{1}}}"
             }}
           ],
           "properties": {{
@@ -68,21 +68,23 @@ METRICS_END = """
 
 FILEPATH = "/var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR/{0}/".format(VERSION)
 
-def init_widgets(hosts, file_name):
+def init_widgets(hosts, files):
     write_str = WIDGETS_START
     for host in hosts:
-        write_str += WIDGETS_TEMPLATE.format(host, file_name)
+        for filename in files:
+            write_str += WIDGETS_TEMPLATE.format(host, filename)
     #remove last comma
     write_str = write_str[:-1]
     write_str += WIDGETS_END
     with open(FILEPATH + "widgets.json", "w") as ofile:
         ofile.write(write_str)
 
-def init_metrics(hosts, file_name):
+def init_metrics(hosts, files):
     write_str = METRICS_START
-    hosts.insert(0, "dummy")
+    write_str += METRICS_TEMPLATE.format('dummy_host', 'dummy_file')
     for host in hosts:
-        write_str += METRICS_TEMPLATE.format(host, file_name)
+        for filename in files:
+            write_str += METRICS_TEMPLATE.format(host, filename)
     #remove last comma
     write_str = write_str[:-1]
     write_str += METRICS_END
@@ -103,12 +105,14 @@ class Transmitter(Script):
 
     print("define widgets and metrics if host")
     host = open("/etc/hostname").read().strip()
-    configs = Script.get_config()['clusterHostInfo']
+    all_configs = Script.get_config()
+    configs = all_configs['clusterHostInfo']
+    folders = all_configs['configurations']['filesystem-config']['folders']
     print("this machine and ambari server host", host, configs['ambari_server_host'])
     if configs['ambari_server_host'][0] == host:
         print("initializing widgets and metrics")
-        init_widgets(configs['all_hosts'], DEFAULT_FOLDER)
-        init_metrics(configs['all_hosts'], DEFAULT_FOLDER)
+        init_widgets(configs['all_hosts'], folders)
+        init_metrics(configs['all_hosts'], folders)
 
     print("done with custom installation step")
   def stop(self, env):
@@ -128,18 +132,17 @@ class Transmitter(Script):
       print("no pid file to unlink")
   def start(self, env):
     print 'Start the fileystem monitor';
-    #self.configure(env) # for safety
+    self.configure(env) # update metrics
     all_configs = Script.get_config()
     config = all_configs['configurations']['filesystem-config']
     metrics_host = all_configs['clusterHostInfo']['metrics_collector_hosts'][0]
-    call_list = ["python", "/var/lib/ambari-agent/cache/common-services/FILESYSTEM_MONITOR/0.1.0/package/scripts/filesystem_monitor.py", str(config['check_interval']), metrics_host] + config['folders'].split() + [str(x) for x in config['folder_sizes'].split()]
+    call_list = ["python", "/var/lib/ambari-agent/cache/common-services/FILESYSTEM_MONITOR/0.1.0/package/scripts/filesystem_monitor.py", str(config['check_interval']), metrics_host] + config['folders'].split() + str(config['folder_sizes']).split()
     call(call_list, wait_for_finish=False, logoutput=True, stdout='/var/log/filesystem-monitor/filesystem-monitor.out', stderr='/var/log/filesystem-monitor/filesystem-monitor.err')
 
   def status(self, env):
     check_process_status("/tmp/filesystem.pid")
   def configure(self, env):
-    print 'Configure the Filesystem';
-    print("New configs: ", Script.get_config()['configurations']['filesystem-config'])
-    self.restart()
+    init_metrics(configs['all_hosts'], folders)
+
 if __name__ == "__main__":
   Transmitter().execute()

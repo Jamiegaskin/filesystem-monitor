@@ -9,7 +9,7 @@
   </property>
   <property>
     <name>folders</name>
-    <value>/home /tmp</value>
+    <value>/home</value>
     <description>List all directories to track. Requires full path names as space seperated values (ex "/home /tmp /usr")</description>
     <value-attributes>
       <type>multiLine</type>
@@ -17,7 +17,7 @@
   </property>
   <property>
     <name>folder_sizes</name>
-    <value>1073741824 1073741824</value>
+    <value>1073741824</value>
     <description>List all folder max sizes in bytes as space seperated values. Must be in same order as folders.</description>
     <value-attributes>
       <type>multiLine</type>

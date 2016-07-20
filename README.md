@@ -38,6 +38,6 @@ curl -u ADMIN_USERNAME:ADMIN_PASSWORD -H "X-Requested-By: ambari" -X DELETE "htt
 ```
 With ADMIN_USERNAME, ADMIN_PASSWORD, AMBARI_SERVER_HOST, and CLUSTER_NAME subbed appropriately for your system. After restarting the Ambari Server and installing the Filesystem Monitor again through the UI, the widgets should show up and be functional. Default max size is 1GB and can be set by editing the widget divisors, which are in bytes.
 
-By default, all hosts are tracking the /home directory. While adding more directories to track is as easy as modifying the configuration and restarting the service, in order to register them as metrics for visuals, you need to edit the metrics.json file at /var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR/0.1.0. The naming scheme is HOSTNAME + FILEPATH with all / replaced with . in the filepath (this seemed to help the widgets make the api calls). I've been simply storing the metric at metrics/filesystem/METRIC_NAME. You should be able to copy-paste the /home section and do a simple replace. The Ambari Server will need restarting to pick these changes up. The widgets can be updated manually, but can also be created from the UI.
+By default, all hosts are tracking the /home and /tmp directory. While adding more directories to track is as easy as modifying the configuration, restarting the Ambari Server to pick the metric changes up, and restarting the service. The widgets need to be updated or created from the UI.
 
 *Code adapted from Bryan Bende's tutorials and examples*

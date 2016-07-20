@@ -8,7 +8,7 @@
             <comment>A custom tool to monitor folder sizes on hosts in Ambari</comment>
             <version>0.1.0</version>
             <components>
-		<!--	
+		<!--
                 <component>
                     <name>Filesystem_Master</name>
                     <displayName>Filesystem Master</displayName>
@@ -69,6 +69,9 @@
                 <scriptType>PYTHON</scriptType>
                 <timeout>600</timeout>
             </commandScript>
+            <requiredServices>
+                <service>AMBARI_METRICS</service>
+            </requiredServices>
         </service>
     </services>
 </metainfo>
