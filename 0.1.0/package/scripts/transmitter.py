@@ -143,6 +143,10 @@ class Transmitter(Script):
   def status(self, env):
     check_process_status("/tmp/filesystem.pid")
   def configure(self, env):
+    all_configs = Script.get_config()
+    configs = all_configs['clusterHostInfo']
+    folders = all_configs['configurations']['filesystem-config']['folders']
+    folders = [x.replace('/', '') for x in folders]
     init_metrics(configs['all_hosts'], folders)
 
 if __name__ == "__main__":
