@@ -23,7 +23,7 @@ WIDGETS_END = """
 WIDGETS_TEMPLATE = """
         {{
           "widget_name": "{0} {1} Space Usage",
-          "description": "Percentage of available space used in /{1}.",
+          "description": "Percentage of available space used in {1}.",
           "widget_type": "GAUGE",
           "is_visible": true,
           "metrics": [
