@@ -28,8 +28,8 @@ WIDGETS_TEMPLATE = """
           "is_visible": true,
           "metrics": [
             {{
-              "name": "{0}{1}",
-              "metric_path": "metrics/filesystem/{0}{1}._avg",
+              "name": "{0}{1}._avg",
+              "metric_path": "metrics/filesystem/{0}{1}",
               "service_name": "FILESYSTEM_MONITOR",
               "component_name": "TRANSMITTER"
             }}
