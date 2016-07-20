@@ -29,7 +29,7 @@ WIDGETS_TEMPLATE = """
           "metrics": [
             {{
               "name": "{0}{1}._avg",
-              "metric_path": "metrics/filesystem/{0}{1}",
+              "metric_path": "metrics/filesystem/{0}{1}._avg",
               "service_name": "FILESYSTEM_MONITOR",
               "component_name": "TRANSMITTER"
             }}
@@ -37,7 +37,7 @@ WIDGETS_TEMPLATE = """
           "values": [
             {{
               "name": "/{1} Space Utilization",
-              "value": "${{{0}{1}}}"
+              "value": "${{{0}{1}._avg}}"
             }}
           ],
           "properties": {{
