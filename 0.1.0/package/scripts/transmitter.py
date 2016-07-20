@@ -37,7 +37,7 @@ WIDGETS_TEMPLATE = """
           "values": [
             {{
               "name": "/{1} Space Utilization",
-              "value": "${{{0}.{1}/{2}}}"
+              "value": "${{{0}.{1}}"
             }}
           ],
           "properties": {{
@@ -68,10 +68,10 @@ METRICS_END = """
 
 FILEPATH = "/var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR/{0}/".format(VERSION)
 
-def init_widgets(hosts, file_name, size):
+def init_widgets(hosts, file_name):
     write_str = WIDGETS_START
     for host in hosts:
-        write_str += WIDGETS_TEMPLATE.format(host, file_name, size)
+        write_str += WIDGETS_TEMPLATE.format(host, file_name)
     #remove last comma
     write_str = write_str[:-1]
     write_str += WIDGETS_END
@@ -107,7 +107,7 @@ class Transmitter(Script):
     print("this machine and ambari server host", host, configs['ambari_server_host'])
     if configs['ambari_server_host'][0] == host:
         print("initializing widgets and metrics")
-        init_widgets(configs['all_hosts'], DEFAULT_FOLDER, DEFAULT_MAX_SIZE)
+        init_widgets(configs['all_hosts'], DEFAULT_FOLDER)
         init_metrics(configs['all_hosts'], DEFAULT_FOLDER)
 
     print("done with custom installation step")
@@ -132,7 +132,7 @@ class Transmitter(Script):
     all_configs = Script.get_config()
     config = all_configs['configurations']['filesystem-config']
     metrics_host = all_configs['clusterHostInfo']['metrics_collector_hosts'][0]
-    call_list = ["python", "/var/lib/ambari-agent/cache/common-services/FILESYSTEM_MONITOR/0.1.0/package/scripts/filesystem_monitor.py", str(config['check_interval']), metrics_host] + config['folders'].split()
+    call_list = ["python", "/var/lib/ambari-agent/cache/common-services/FILESYSTEM_MONITOR/0.1.0/package/scripts/filesystem_monitor.py", str(config['check_interval']), metrics_host] + config['folders'].split() + [str(x) for x in config['folder_sizes'].split()]
     call(call_list, wait_for_finish=False, logoutput=True, stdout='/var/log/filesystem-monitor/filesystem-monitor.out', stderr='/var/log/filesystem-monitor/filesystem-monitor.err')
 
   def status(self, env):

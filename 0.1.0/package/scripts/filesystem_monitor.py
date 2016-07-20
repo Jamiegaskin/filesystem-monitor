@@ -5,7 +5,7 @@ import requests
 
 print("Starting up")
 """
-ARGS: refresh_interval (seconds), metrics hostname, files-to-track
+ARGS: refresh_interval (seconds), metrics hostname, files-to-track, file-sizes
 """
 print(sys.argv)
 REFRESH_INTERVAL = int(sys.argv[1]) #seconds
@@ -25,7 +25,11 @@ METRIC_TEMPLATE = ('{{'
         ']'
 '}}')
 HEADER = {'Content-Type': 'application/json'}
-files = sys.argv[3:]
+file_info = sys.argv[3:]
+num_files = len(file_info) / 2
+file_names = file_info[:num_files]
+file_sizes = [float(x) for x in file_info[num_files:]]
+files = dict(zip(file_names, file_sizes))
 folder_memoizer = {}
 status = "RUNNING"
 try:
@@ -54,17 +58,18 @@ def clear_memoizer():
 def was_modified_within(filename, interval):
     return time.time() - os.path.getmtime(filename) < interval
 
-def send_to_metrics(filename, size):
+def send_to_metrics(filename, size, maxsize):
     #import pdb; pdb.set_trace()
     curr_time = int(time.time() * 1000) #convert to ms
     metric_name = hostname + filename.replace("/", ".")
+    size_percent = size / maxsize
     json_data = METRIC_TEMPLATE.format(curr_time,
-        metric_name, curr_time, curr_time, size,
+        metric_name, curr_time, curr_time, size_percent,
         hostname)
     post_response = requests.post(METRICS_URL, data = json_data,
         headers = HEADER)
-    print("{2} - Name: {0}, Size: {1}, {3}".format(metric_name,
-        size, time.ctime(), post_response))
+    print("{2} - Name: {0}, Size: {1}%, {3}".format(metric_name,
+        size_percent, time.ctime(), post_response))
     if post_response.status_code != 200:
         status = "FAILURE"
         print("status not 200!")
@@ -78,12 +83,12 @@ print("Starting metrics loop")
 while(True):
     start = time.time()
     clear_memoizer()
-    for filename in files:
+    for filename, maxsize in files.iteritems():
         size = folder_size_memoize(filename)
         try:
             #print("sending to metrics: ", filename, METRICS_URL)
-            send_to_metrics(filename, size)
+            send_to_metrics(filename, size, maxsize)
         except:
-            print("exception handling TODO - probably will go to alerts eventually", sys.exc_info())
+            print("Send to metrics failed", sys.exc_info())
     end = time.time()
     time.sleep(max(REFRESH_INTERVAL - (end - start), 0))
