@@ -107,7 +107,7 @@ class Transmitter(Script):
     host = open("/etc/hostname").read().strip()
     all_configs = Script.get_config()
     configs = all_configs['clusterHostInfo']
-    folders = all_configs['configurations']['filesystem-config']['folders']
+    folders = all_configs['configurations']['filesystem-config']['folders'].split(" ")
     folders = [x.replace('/', '') for x in folders]
     print("this machine and ambari server host", host, configs['ambari_server_host'])
     if configs['ambari_server_host'][0] == host:
@@ -145,7 +145,7 @@ class Transmitter(Script):
   def configure(self, env):
     all_configs = Script.get_config()
     configs = all_configs['clusterHostInfo']
-    folders = all_configs['configurations']['filesystem-config']['folders']
+    folders = all_configs['configurations']['filesystem-config']['folders'].split(" ")
     folders = [x.replace('/', '') for x in folders]
     host = open("/etc/hostname").read().strip()
     if configs['ambari_server_host'][0] == host:
