@@ -129,8 +129,10 @@ class Transmitter(Script):
   def start(self, env):
     print 'Start the fileystem monitor';
     #self.configure(env) # for safety
-    config = Script.get_config()['configurations']['filesystem-config']
-    call_list = ["python", "/var/lib/ambari-agent/cache/common-services/FILESYSTEM_MONITOR/0.1.0/package/scripts/filesystem_monitor.py", str(config['check_interval']), config['metrics_host']] + config['folders'].split()
+    all_configs = Script.get_config()
+    config = all_configs['configurations']['filesystem-config']
+    metrics_host = all_configs['clusterHostInfo']['metrics_collector_hosts'][0]
+    call_list = ["python", "/var/lib/ambari-agent/cache/common-services/FILESYSTEM_MONITOR/0.1.0/package/scripts/filesystem_monitor.py", str(config['check_interval']), metrics_host] + config['folders'].split()
     call(call_list, wait_for_finish=False, logoutput=True, stdout='/var/log/filesystem-monitor/filesystem-monitor.out', stderr='/var/log/filesystem-monitor/filesystem-monitor.err')
 
   def status(self, env):

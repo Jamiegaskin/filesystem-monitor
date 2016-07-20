@@ -30,7 +30,7 @@ Restart Ambari Server.
 ambari-server restart
 ```
 
-Installation can now be completed by adding the service "Filesystem Monitor". The only configuration you **must** set immediately is the host name for the Ambari Metrics Collector.
+Installation can now be completed by adding the service "Filesystem Monitor".
 
 After installation restart the Ambari Server one more time to pick up the auto-configured widgets and metrics.
 
