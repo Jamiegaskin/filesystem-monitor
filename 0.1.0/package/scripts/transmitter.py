@@ -137,7 +137,7 @@ class Transmitter(Script):
     all_configs = Script.get_config()
     config = all_configs['configurations']['filesystem-config']
     metrics_host = all_configs['clusterHostInfo']['metrics_collector_hosts'][0]
-    call_list = ["python", "/var/lib/ambari-agent/cache/common-services/FILESYSTEM_MONITOR/0.1.0/package/scripts/filesystem_monitor.py", str(config['check_interval']), metrics_host] + config['folders'].split() + str(config['folder_sizes']).split()
+    call_list = ["python", "/var/lib/ambari-agent/cache/common-services/FILESYSTEM_MONITOR/0.1.0/package/scripts/filesystem_monitor.py", str(config['check_interval']), metrics_host] + config['folders'].split(" ") + str(config['folder_sizes']).split(" ")
     call(call_list, wait_for_finish=False, logoutput=True, stdout='/var/log/filesystem-monitor/filesystem-monitor.out', stderr='/var/log/filesystem-monitor/filesystem-monitor.err')
 
   def status(self, env):
