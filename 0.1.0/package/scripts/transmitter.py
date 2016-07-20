@@ -22,14 +22,14 @@ WIDGETS_END = """
 """
 WIDGETS_TEMPLATE = """
         {{
-          "widget_name": "{0} /{1} Space Usage",
+          "widget_name": "{0} {1} Space Usage",
           "description": "Percentage of available space used in /{1}.",
           "widget_type": "GAUGE",
           "is_visible": true,
           "metrics": [
             {{
-              "name": "{0}.{1}",
-              "metric_path": "metrics/filesystem/{0}.{1}._avg",
+              "name": "{0}{1}",
+              "metric_path": "metrics/filesystem/{0}{1}._avg",
               "service_name": "FILESYSTEM_MONITOR",
               "component_name": "TRANSMITTER"
             }}
@@ -37,7 +37,7 @@ WIDGETS_TEMPLATE = """
           "values": [
             {{
               "name": "/{1} Space Utilization",
-              "value": "${{{0}.{1}}}"
+              "value": "${{{0}{1}}}"
             }}
           ],
           "properties": {{
@@ -53,8 +53,8 @@ METRICS_START = """{
         "metrics": {
           "default": {"""
 METRICS_TEMPLATE = """
-                "metrics/filesystem/{0}.{1}": {{
-                  "metric": "{0}.{1}",
+                "metrics/filesystem/{0}{1}": {{
+                  "metric": "{0}{1}",
                   "pointInTime": true,
                   "temporal": true
                 }},"""
@@ -108,6 +108,7 @@ class Transmitter(Script):
     all_configs = Script.get_config()
     configs = all_configs['clusterHostInfo']
     folders = all_configs['configurations']['filesystem-config']['folders']
+    folders = [x.replace('/', '') for x in folders]
     print("this machine and ambari server host", host, configs['ambari_server_host'])
     if configs['ambari_server_host'][0] == host:
         print("initializing widgets and metrics")
