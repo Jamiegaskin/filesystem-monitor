@@ -36,8 +36,8 @@ At this point the service needs to be reinstalled for the installation process t
 ```
 curl -u ADMIN_USERNAME:ADMIN_PASSWORD -H "X-Requested-By: ambari" -X DELETE "http://AMBARI_SERVER_HOST:8080/api/v1/clusters/CLUSTER_NAME/services/FILESYSTEM_MONITOR"
 ```
-With ADMIN_USERNAME, ADMIN_PASSWORD, AMBARI_SERVER_HOST, and CLUSTER_NAME subbed appropriately for your system. After restarting the Ambari Server and installing the Filesystem Monitor again through the UI, the widgets should show up and be functional. Default max size is 1GB and can be set by editing the widget divisors, which are in bytes.
+With ADMIN_USERNAME, ADMIN_PASSWORD, AMBARI_SERVER_HOST, and CLUSTER_NAME subbed appropriately for your system. After restarting the Ambari Server and installing the Filesystem Monitor again through the UI, the widgets should show up and be functional. If you edited the folder settings on installation, you'll need to follow the steps in the next paragraph.
 
-By default, all hosts are tracking the /home and /tmp directory. While adding more directories to track is as easy as modifying the configuration, restarting the Ambari Server to pick the metric changes up, and restarting the service. The widgets need to be updated or created from the UI.
+By default, all hosts are tracking the /home and /tmp directory. Adding more directories to track can be done by modifying the configuration, restarting the Ambari Server to pick the metric changes up, and restarting the service. The widgets need to be updated or created from the UI.
 
 *Code adapted from Bryan Bende's tutorials and examples*
