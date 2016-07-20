@@ -147,7 +147,9 @@ class Transmitter(Script):
     configs = all_configs['clusterHostInfo']
     folders = all_configs['configurations']['filesystem-config']['folders']
     folders = [x.replace('/', '') for x in folders]
-    init_metrics(configs['all_hosts'], folders)
+    host = open("/etc/hostname").read().strip()
+    if configs['ambari_server_host'][0] == host:
+        init_metrics(configs['all_hosts'], folders)
 
 if __name__ == "__main__":
   Transmitter().execute()
