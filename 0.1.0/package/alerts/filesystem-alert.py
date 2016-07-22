@@ -21,6 +21,7 @@ PERCENT_USED_CRITICAL_DEFAULT = 90
 config = Script.get_config()
 cluster_name = config['Clusters']['cluster_name']
 ambari_server = config['clusterHostInfo']['ambari_server_host'][0]
+folders = config['configurations']['filesystem-config']['folders'].split(" ")
 
 URL_GET_TEMPLATE = "http://{ambari_server}:8080/api/v1/clusters/{cluster_name}/services/FILESYSTEM_MONITOR/components/TRANSMITTER?fields=metrics/filesystem/{metric}&_={curr_time}"
 
@@ -32,7 +33,7 @@ def execute(configurations={}, parameters={}, host_name=None):
   parameters (dictionary): a mapping of script parameter key to value
   host_name (string): the name of this host where the alert is running
   """
-
+  path = parameters['filepath']
   disk_usage = get_folder_percent(path, host_name)
   result_code, label = _get_warnings_for_partition(parameters, disk_usage)
   return result_code, [label]

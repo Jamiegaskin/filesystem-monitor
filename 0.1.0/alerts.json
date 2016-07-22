@@ -4,14 +4,27 @@
         {
           "name": ".home_size",
           "label": "/home size",
-          "description": "Triggered when a directory usage passes thresholds",
+          "description": "Triggered when /home usage passes thresholds",
           "interval": 1,
           "scope": "ANY",
           "enabled": true,
           "source": {
             "type": "SCRIPT",
             "path": "FILESYSTEM_MONITOR/0.1.0/package/alerts/filesystem-alert.py",
-            "parameters": []
+            "parameters": [{"filepath": "/home"}]
+          }
+        }
+        {
+          "name": ".tmp_size",
+          "label": "/tmp size",
+          "description": "Triggered when /tmp usage passes thresholds",
+          "interval": 1,
+          "scope": "ANY",
+          "enabled": true,
+          "source": {
+            "type": "SCRIPT",
+            "path": "FILESYSTEM_MONITOR/0.1.0/package/alerts/filesystem-alert.py",
+            "parameters": [{"filepath": "/tmp"}]
           }
         }
     ]
