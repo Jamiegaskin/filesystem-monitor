@@ -1,60 +1,19 @@
 {
   "FILESYSTEM_MONITOR": {
-    "service": [
-      {
-        "name": "metrics_monitor_process_percent",
-        "label": "Percent Metrics Monitors Available",
-        "description": "This alert is triggered if a percentage of Metrics Monitor processes are not up and listening on the network for the configured warning and critical thresholds.",
-        "interval": 1,
-        "scope": "SERVICE",
-        "enabled": true,
-        "source": {
-          "type": "AGGREGATE",
-          "alert_name": "ams_metrics_monitor_process",
-          "reporting": {
-            "ok": {
-              "text": "affected: [{1}], total: [{0}]"
-            },
-            "warning": {
-              "text": "affected: [{1}], total: [{0}]",
-              "value": 10
-            },
-            "critical": {
-              "text": "affected: [{1}], total: [{0}]",
-              "value": 30
-            },
-            "units" : "%",
-            "type": "PERCENT"
+    "TRANSMITTER": [
+        {
+          "name": ".home_size",
+          "label": "/home size",
+          "description": "Triggered when a directory usage passes thresholds",
+          "interval": 1,
+          "scope": "ANY",
+          "enabled": true,
+          "source": {
+            "type": "SCRIPT",
+            "path": "FILESYSTEM_MONITOR/0.1.0/package/alerts/filesystem-alert.py",
+            "parameters": []
           }
         }
-      }
-    ],
-    "METRICS_COLLECTOR": [
-      {
-        "name": "ams_metrics_collector_process",
-        "label": "Metrics Collector Process",
-        "description": "This alert is triggered if the Metrics Collector cannot be confirmed to be up and listening on the configured port for number of seconds equal to threshold.",
-        "interval": 1,
-        "scope": "ANY",
-        "enabled": true,
-        "source": {
-          "type": "PORT",
-          "uri": "{{ams-site/timeline.metrics.service.webapp.address}}",
-          "default_port": 6188,
-          "reporting": {
-            "ok": {
-              "text": "TCP OK - {0:.3f}s response on port {1}"
-            },
-            "warning": {
-              "text": "TCP OK - {0:.3f}s response on port {1}",
-              "value": 1.5
-            },
-            "critical": {
-              "text": "Connection failed: {0} to {1}:{2}",
-              "value": 5.0
-            }
-          }
-        }
-      }
+    ]
   }
 }
