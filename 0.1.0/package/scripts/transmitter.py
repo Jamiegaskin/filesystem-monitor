@@ -4,8 +4,6 @@ import os
 from resource_management import *
 
 VERSION = "0.1.0"
-DEFAULT_MAX_SIZE = 2**30 #1 GB
-DEFAULT_FOLDER = 'home'
 
 WIDGETS_START = """{
   "layouts": [
@@ -150,6 +148,9 @@ class Transmitter(Script):
     host = open("/etc/hostname").read().strip()
     if configs['ambari_server_host'][0] == host:
         init_metrics(configs['all_hosts'], folders)
+
+  def print_configs(self, env):
+    print(Script.get_config())
 
 if __name__ == "__main__":
   Transmitter().execute()

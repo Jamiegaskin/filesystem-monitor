@@ -20,7 +20,31 @@
     <value>1073741824 1073741824</value>
     <description>List all folder max sizes in bytes as space seperated values. Must be in same order as folders.</description>
     <value-attributes>
+      <type>string</type>
       <type>multiLine</type>
     </value-attributes>
   </property>
+  <property>
+    <name>warning_threshold</name>
+    <value>70</value>
+    <value-attributes>
+        <type>int</type>
+        <minimum>0</minimum>
+        <maximum>100</maximum>
+        <unit>%</unit>
+  </value-attributes>
+    <description>Warning threshold for all folders. You can add a custom property and modify the alert script if more granular control is desired.</description>
+  </property>
+  <property>
+    <name>critical_threshold</name>
+    <value>90</value>
+    <value-attributes>
+        <type>int</type>
+        <minimum>0</minimum>
+        <maximum>100</maximum>
+        <unit>%</unit>
+  </value-attributes>
+    <description>Critical threshold for all folders. You can add a custom property and modify the alert script if more granular control is desired.</description>
+  </property>
+
 </configuration>

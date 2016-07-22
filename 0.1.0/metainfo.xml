@@ -51,6 +51,16 @@
                             <primary>true</primary>
                          </log>
                      </logs>
+                     <customCommands>
+                    <customCommand>
+                      <name>PRINT_CONFIGS</name>
+                      <commandScript>
+                        <script>scripts/transmitter.py</script>
+                        <scriptType>PYTHON</scriptType>
+                        <timeout>600</timeout>
+                      </commandScript>
+                    </customCommand>
+                  </customCommands>
                 </component>
             </components>
             <osSpecifics>
@@ -64,7 +74,7 @@
             <configuration-dependencies>
                 <config-type>filesystem-config</config-type>
             </configuration-dependencies>
-	    <commandScript>
+	        <commandScript>
                 <script>scripts/master.py</script>
                 <scriptType>PYTHON</scriptType>
                 <timeout>600</timeout>
