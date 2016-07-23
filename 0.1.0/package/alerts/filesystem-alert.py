@@ -21,7 +21,6 @@ PERCENT_USED_CRITICAL_DEFAULT = 90
 config = Script.get_config()
 cluster_name = config['Clusters']['cluster_name']
 ambari_server = config['clusterHostInfo']['ambari_server_host'][0]
-folders = config['configurations']['filesystem-config']['folders'].split(" ")
 
 URL_GET_TEMPLATE = "http://{ambari_server}:8080/api/v1/clusters/{cluster_name}/services/FILESYSTEM_MONITOR/components/TRANSMITTER?fields=metrics/filesystem/{metric}&_={curr_time}"
 

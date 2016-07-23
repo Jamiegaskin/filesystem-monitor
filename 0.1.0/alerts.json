@@ -11,9 +11,15 @@
           "source": {
             "type": "SCRIPT",
             "path": "FILESYSTEM_MONITOR/0.1.0/package/alerts/filesystem-alert.py",
-            "parameters": [{"filepath": "/home"}]
+            "parameters": [{
+              "name": "filepath",
+              "display_name": "File Path",
+              "value": "/home",
+              "type": "STRING",
+              "description": "/home file path",
+            }]
           }
-        }
+      },
         {
           "name": ".tmp_size",
           "label": "/tmp size",
@@ -24,7 +30,13 @@
           "source": {
             "type": "SCRIPT",
             "path": "FILESYSTEM_MONITOR/0.1.0/package/alerts/filesystem-alert.py",
-            "parameters": [{"filepath": "/tmp"}]
+            "parameters": [{
+              "name": "filepath",
+              "display_name": "File Path",
+              "value": "/tmp",
+              "type": "STRING",
+              "description": "/tmp file path",
+            }]
           }
         }
     ]
