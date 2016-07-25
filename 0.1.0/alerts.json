@@ -16,7 +16,14 @@
               "display_name": "File Path",
               "value": "/home",
               "type": "STRING",
-              "description": "/home file path",
+              "description": "/home file path"
+            },
+            {
+              "name": "server_host",
+              "display_name": "Ambari Server Host",
+              "value": "{{clusterHostInfo/ambari_server_host}}",
+              "type": "STRING",
+              "description": "Name of the host that runs the Ambari Server."
             }]
           }
       },
@@ -35,7 +42,14 @@
               "display_name": "File Path",
               "value": "/tmp",
               "type": "STRING",
-              "description": "/tmp file path",
+              "description": "/tmp file path"
+            },
+            {
+              "name": "server_host",
+              "display_name": "Ambari Server Host",
+              "value": "{{clusterHostInfo/ambari_server_host}}",
+              "type": "STRING",
+              "description": "Name of the host that runs the Ambari Server."
             }]
           }
         }
