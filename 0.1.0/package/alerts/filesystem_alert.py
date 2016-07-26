@@ -7,6 +7,9 @@ import requests
 from time import time
 import sys
 
+sys.stdout = open("/var/log/filesystem-monitor/filesystem-monitor-alerts.out", "w")
+sys.stderr = open("/var/log/filesystem-monitor/filesystem-monitor-alerts.err", "w")
+
 DiskInfo = collections.namedtuple('DiskInfo', 'percent path')
 
 # script parameter keys
@@ -74,6 +77,7 @@ def get_folder_percent(path, hostname, server_host, cluster_name):
   """
 
   metric_name = hostname + path.replace("/", ".")
+  print('metric_name', metric_name)
   try:
       folder_percent_call = requests.get(URL_GET_TEMPLATE.format(ambari_server = server_host, cluster_name = cluster_name, metric = metric_name, curr_time = int(time() * 1000)))
   except:
@@ -82,5 +86,5 @@ def get_folder_percent(path, hostname, server_host, cluster_name):
   if folder_percent_call.status_code != 200:
       print("status code not 200", folder_percent_call.status_code)
       return None
-
+  print("percent info: ", folder_percent_call.json()['metrics']['filesystem'][metric_name])
   return DiskInfo(percent = folder_percent_call.json()['metrics']['filesystem'][metric_name], path=path)
