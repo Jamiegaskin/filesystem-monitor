@@ -17,7 +17,7 @@ mkdir /var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR
 
 Copy the files into place.
 ```
-cp -R filesystem-monitor/FILESYSTEM_MONITOR /var/lib/ambari-server/resources/stacks/HDP/HDP_VERSION/services
+cp -R filesystem-monitor/FILESYSTEM_MONITOR /var/lib/ambari-server/resources/stacks/HDP/<HDP_VERSION>/services
 cp -R filesystem-monitor/0.1.0 /var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR
 ```
 
@@ -34,7 +34,7 @@ Installation can now be completed by adding the service "Filesystem Monitor".
 
 At this point the service needs to be reinstalled for the installation process to pick up the auto-generated widgets and metrics (I'm sure there's a better way to do this, and if you know what it is, please code it up and put in a pull request). Stop the service, then run this command from any machine with network access to the Ambari Server to delete the service.
 ```
-curl -u ADMIN_USERNAME:ADMIN_PASSWORD -H "X-Requested-By: ambari" -X DELETE "http://AMBARI_SERVER_HOST:8080/api/v1/clusters/CLUSTER_NAME/services/FILESYSTEM_MONITOR"
+curl -u <ADMIN_USERNAME>:<ADMIN_PASSWORD> -H "X-Requested-By: ambari" -X DELETE "http://<AMBARI_SERVER_HOST>:8080/api/v1/clusters/<CLUSTER_NAME>/services/FILESYSTEM_MONITOR"
 ```
 With ADMIN_USERNAME, ADMIN_PASSWORD, AMBARI_SERVER_HOST, and CLUSTER_NAME subbed appropriately for your system. After restarting the Ambari Server and installing the Filesystem Monitor again through the UI, the widgets should show up and be functional. If you edited the folder settings on installation, you'll need to follow the steps in the next paragraph.
 
