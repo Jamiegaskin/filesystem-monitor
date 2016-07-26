@@ -79,6 +79,7 @@ def get_folder_percent(path, hostname, server_host, cluster_name):
   metric_name = hostname + path.replace("/", ".")
   print('metric_name', metric_name)
   try:
+      print("url", URL_GET_TEMPLATE.format(ambari_server = server_host, cluster_name = cluster_name, metric = metric_name, curr_time = int(time() * 1000)))
       folder_percent_call = requests.get(URL_GET_TEMPLATE.format(ambari_server = server_host, cluster_name = cluster_name, metric = metric_name, curr_time = int(time() * 1000)))
   except:
       print("API error", sys.exc_info())
