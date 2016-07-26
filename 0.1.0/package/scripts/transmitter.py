@@ -109,7 +109,6 @@ ALERTS_END = """
 }"""
 
 FILEPATH = "/var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR/{0}/".format(VERSION)
-ALL_CONFIGS = Script.get_config()
 
 def init_widgets(hosts, files):
     write_str = WIDGETS_START
@@ -136,8 +135,9 @@ def init_metrics(hosts, files):
 
 def init_alerts(files):
     write_str = ALERTS_START
-    server_host = ALL_CONFIGS['clusterHostInfo']['ambari_server_host'][0]
-    cluster_name = ALL_CONFIGS['clusterName']
+    all_configs = Script.get_config()
+    server_host = all_configs['clusterHostInfo']['ambari_server_host'][0]
+    cluster_name = all_configs['clusterName']
     for filename in files:
         write_str += ALERTS_TEMPLATE.format(folder = filename, server_host = server_host, cluster_name = cluster_name)
     #remove last comma
@@ -176,16 +176,18 @@ class Transmitter(Script):
   def start(self, env):
     print 'Start the fileystem monitor';
     self.configure(env)
-    config = ALL_CONFIGS['configurations']['filesystem-config']
-    metrics_host = ALL_CONFIGS['clusterHostInfo']['metrics_collector_hosts'][0]
+    all_configs = Script.get_config()
+    config = all_configs['configurations']['filesystem-config']
+    metrics_host = all_configs['clusterHostInfo']['metrics_collector_hosts'][0]
     call_list = ["python", "/var/lib/ambari-agent/cache/common-services/FILESYSTEM_MONITOR/0.1.0/package/scripts/filesystem_monitor.py", str(config['check_interval']), metrics_host] + config['folders'].split(" ") + str(config['folder_sizes']).split(" ")
     call(call_list, wait_for_finish=False, logoutput=True, stdout='/var/log/filesystem-monitor/filesystem-monitor.out', stderr='/var/log/filesystem-monitor/filesystem-monitor.err')
 
   def status(self, env):
     check_process_status("/tmp/filesystem.pid")
   def configure(self, env):
-    configs = ALL_CONFIGS['clusterHostInfo']
-    folders = ALL_CONFIGS['configurations']['filesystem-config']['folders'].split(" ")
+    all_configs = Script.get_config()
+    configs = all_configs['clusterHostInfo']
+    folders = all_configs['configurations']['filesystem-config']['folders'].split(" ")
     folders_dots = [x.replace('/', '.') for x in folders]
     host = open("/etc/hostname").read().strip()
     if configs['ambari_server_host'][0] == host:
