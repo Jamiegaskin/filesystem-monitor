@@ -70,9 +70,9 @@ ALERTS_START = """{
 
 ALERTS_TEMPLATE = """
         {{
-          "name": ".{folder}_size",
-          "label": "/{folder} size",
-          "description": "Triggered when /{folder} usage passes thresholds",
+          "name": "{folder}_size",
+          "label": "{folder} size",
+          "description": "Triggered when {folder} usage passes thresholds",
           "interval": 1,
           "scope": "ANY",
           "enabled": true,
@@ -82,9 +82,9 @@ ALERTS_TEMPLATE = """
             "parameters": [{{
               "name": "filepath",
               "display_name": "File Path",
-              "value": "/{folder}",
+              "value": "{folder}",
               "type": "STRING",
-              "description": "/{folder} file path"
+              "description": "{folder} file path"
             }},
             {{
               "name": "server_host",
@@ -106,7 +106,8 @@ ALERTS_TEMPLATE = """
 ALERTS_END = """
     ]
   }
-}"""
+}
+"""
 
 FILEPATH = "/var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR/{0}/".format(VERSION)
 
