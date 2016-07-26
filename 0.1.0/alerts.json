@@ -21,14 +21,14 @@
             {
               "name": "server_host",
               "display_name": "Ambari Server Host",
-              "value": "{clusterHostInfo/ambari_server_host}",
+              "value": "{{clusterHostInfo/ambari_server_host}}",
               "type": "STRING",
               "description": "Name of the host that runs the Ambari Server."
             },
             {
               "name": "cluster_name",
               "display_name": "Cluster Name",
-              "value": "{clusterName}",
+              "value": "{{clusterName}}",
               "type": "STRING",
               "description": "Name of the current cluster"
             }]
@@ -54,14 +54,14 @@
             {
               "name": "server_host",
               "display_name": "Ambari Server Host",
-              "value": "{clusterHostInfo/ambari_server_host}",
+              "value": "{{clusterHostInfo/ambari_server_host}}",
               "type": "STRING",
               "description": "Name of the host that runs the Ambari Server."
             },
             {
               "name": "cluster_name",
               "display_name": "Cluster Name",
-              "value": "{clusterName}",
+              "value": "{{clusterName}}",
               "type": "STRING",
               "description": "Name of the current cluster"
             }]
