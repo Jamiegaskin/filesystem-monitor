@@ -121,7 +121,7 @@ def init_widgets(hosts, files):
     write_str = WIDGETS_START
     for host in hosts:
         for filename in files:
-            write_str += WIDGETS_TEMPLATE.format(host, filename, warning = WARNING_DEFAULT / 100, critical = CRITICAL_DEFAULT / 100)
+            write_str += WIDGETS_TEMPLATE.format(host, filename, warning = WARNING_DEFAULT / 100., critical = CRITICAL_DEFAULT / 100.)
     #remove last comma
     write_str = write_str[:-1]
     write_str += WIDGETS_END
