@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-
-import collections
 import os
 from resource_management.libraries.script import Script
 import requests
@@ -9,8 +7,6 @@ import sys
 
 sys.stdout = open("/var/log/filesystem-monitor/filesystem-monitor-alerts.out", "w")
 sys.stderr = open("/var/log/filesystem-monitor/filesystem-monitor-alerts.err", "w")
-
-DiskInfo = collections.namedtuple('DiskInfo', 'percent path')
 
 # script parameter keys
 PERCENT_USED_WARNING_KEY = "warning_threshold"
@@ -35,12 +31,12 @@ def execute(configurations={}, parameters={}, host_name=None):
   path = parameters['filepath']
   cluster_name = parameters['cluster_name']
 
-  disk_usage = get_folder_percent(path=path, hostname=host_name, server_host=server_host, cluster_name=cluster_name)
-  result_code, label = _get_warnings_for_partition(parameters, disk_usage)
+  percent = get_folder_percent(path=path, hostname=host_name, server_host=server_host, cluster_name=cluster_name)
+  result_code, label = _get_warnings_for_partition(parameters, percent, path)
   return result_code, [label]
 
 
-def _get_warnings_for_partition(parameters, disk_usage):
+def _get_warnings_for_partition(parameters, percent, path):
 
   # start with hard coded defaults
   warning_percent = PERCENT_USED_WARNING_DEFAULT
@@ -53,11 +49,10 @@ def _get_warnings_for_partition(parameters, disk_usage):
     critical_percent = float(parameters[PERCENT_USED_CRITICAL_KEY])
 
 
-  if disk_usage is None:
+  if percent is None:
     return 'UNKNOWN', ['Unable to determine the disk usage']
 
   result_code = 'OK'
-  percent = disk_usage.percent * 100
   if percent > critical_percent:
     result_code = 'CRITICAL'
   elif percent > warning_percent:
@@ -66,7 +61,7 @@ def _get_warnings_for_partition(parameters, disk_usage):
   label = 'Capacity Used: {0:.2f}%'.format(percent)
 
   if disk_usage.path is not None:
-    label += ", path=" + disk_usage.path
+    label += ", path=" + path
 
   return result_code, label
 
@@ -85,7 +80,7 @@ def get_folder_percent(path, hostname, server_host, cluster_name):
       print("API error", sys.exc_info())
       return None
   if folder_percent_call.status_code != 200:
-      print("status code not 200", folder_percent_call.status_code)
+      print("status code not 200", folder_percent_call.status_code, folder_percent_call.text)
       return None
   print("percent info: ", folder_percent_call.json()['metrics']['filesystem'][metric_name])
-  return DiskInfo(percent = folder_percent_call.json()['metrics']['filesystem'][metric_name], path=path)
+  return folder_percent_call.json()['metrics']['filesystem'][metric_name] * 100

@@ -70,38 +70,42 @@ ALERTS_START = """{
 
 ALERTS_TEMPLATE = """
         {{
-          "name": "{folder}_size",
-          "label": "{folder} size",
-          "description": "Triggered when {folder} usage passes thresholds",
-          "interval": 1,
-          "scope": "ANY",
-          "enabled": true,
-          "source": {{
-            "type": "SCRIPT",
-            "path": "FILESYSTEM_MONITOR/0.1.0/package/alerts/filesystem_alert.py",
-            "parameters": [{{
-              "name": "filepath",
-              "display_name": "File Path",
-              "value": "{folder}",
-              "type": "STRING",
-              "description": "{folder} file path"
+        "name": "{folder}_size",
+        "label": "{folder} disk usage",
+        "description": "This alert triggers when a watched folder passes a percentage threshold of its allotted amount",
+        "interval": 1,
+        "scope": "ANY",
+        "enabled": true,
+        "source": {{
+          "type": "METRIC",
+          "uri": {{
+            "http": "{{{{filesystem-config/port}}}}",
+            "default_port": 6423,
+            "connection_timeout": 5.0
+          }},
+          "reporting": {{
+            "ok": {{
+              "text": "Usage: {{0:.1%}}"
             }},
-            {{
-              "name": "server_host",
-              "display_name": "Ambari Server Host",
-              "value": "{server_host}",
-              "type": "STRING",
-              "description": "Name of the host that runs the Ambari Server."
+            "warning": {{
+              "text": "Usage: {{0:.1%}}",
+              "value": {{{{filesystem-config/warning_threshold}}}}
             }},
-            {{
-              "name": "cluster_name",
-              "display_name": "Cluster Name",
-              "value": "{cluster_name}",
-              "type": "STRING",
-              "description": "Name of the current cluster"
-            }}]
+            "critical": {{
+              "text": "Usage: {{0:.1%}}",
+              "value": {{{{filesystem-config/critical_threshold}}}}
+            }},
+            "units" : "%",
+            "type": "PERCENT"
+          }},
+          "jmx": {{
+            "property_list": [
+              "Hadoop:name={folder_dots}"
+            ],
+            "value": "{0} * 100"
           }}
-        }},"""
+        }}
+      }},"""
 
 ALERTS_END = """
     ]
@@ -180,7 +184,7 @@ class Transmitter(Script):
     all_configs = Script.get_config()
     config = all_configs['configurations']['filesystem-config']
     metrics_host = all_configs['clusterHostInfo']['metrics_collector_hosts'][0]
-    call_list = ["python", "/var/lib/ambari-agent/cache/common-services/FILESYSTEM_MONITOR/0.1.0/package/scripts/filesystem_monitor.py", str(config['check_interval']), metrics_host] + config['folders'].split(" ") + str(config['folder_sizes']).split(" ")
+    call_list = ["python", "/var/lib/ambari-agent/cache/common-services/FILESYSTEM_MONITOR/0.1.0/package/scripts/filesystem_monitor.py", str(config['check_interval']), metrics_host, str(config['port'])] + config['folders'].split(" ") + str(config['folder_sizes']).split(" ")
     call(call_list, wait_for_finish=False, logoutput=True, stdout='/var/log/filesystem-monitor/filesystem-monitor.out', stderr='/var/log/filesystem-monitor/filesystem-monitor.err')
 
   def status(self, env):

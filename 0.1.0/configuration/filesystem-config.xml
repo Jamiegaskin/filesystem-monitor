@@ -8,6 +8,11 @@
     <description>How often in seconds the program checks and transmits size of all tracked directories.</description>
   </property>
   <property>
+    <name>port</name>
+    <value>6423</value>
+    <description>The port the metrics are broadcasted to by the Transmitters</description>
+  </property>
+  <property>
     <name>folders</name>
     <value>/home /tmp</value>
     <description>List all directories to track. Requires full path names as space seperated values (ex "/home /tmp /usr")</description>
@@ -33,7 +38,7 @@
         <maximum>100</maximum>
         <unit>%</unit>
   </value-attributes>
-    <description>Warning threshold for all folders. You can add a custom property and modify the alert script if more granular control is desired.</description>
+    <description>Warning threshold for all folders. You can add a custom property and modify the alert definition if more granular control is desired.</description>
   </property>
   <property>
     <name>critical_threshold</name>
@@ -44,7 +49,7 @@
         <maximum>100</maximum>
         <unit>%</unit>
   </value-attributes>
-    <description>Critical threshold for all folders. You can add a custom property and modify the alert script if more granular control is desired.</description>
+    <description>Critical threshold for all folders. You can add a custom property and modify the alert definition if more granular control is desired.</description>
   </property>
 
 </configuration>
