@@ -4,6 +4,8 @@ import os
 from resource_management import *
 
 VERSION = "0.1.0"
+WARNING_DEFAULT = 70
+CRITICAL_DEFAULT = 90
 
 WIDGETS_START = """{
   "layouts": [
@@ -39,8 +41,8 @@ WIDGETS_TEMPLATE = """
             }}
           ],
           "properties": {{
-            "warning_threshold": "0.7",
-            "error_threshold": "0.9"
+            "warning_threshold": "{warning}",
+            "error_threshold": "{critical}"
           }}
         }},"""
 
@@ -100,7 +102,7 @@ ALERTS_TEMPLATE = """
           }},
           "jmx": {{
             "property_list": [
-              "Hadoop:name={folder_dots}"
+              "Hadoop:name={folder_dots}/{folder_dots}"
             ],
             "value": "{{0}} * 100"
           }}
@@ -119,7 +121,7 @@ def init_widgets(hosts, files):
     write_str = WIDGETS_START
     for host in hosts:
         for filename in files:
-            write_str += WIDGETS_TEMPLATE.format(host, filename)
+            write_str += WIDGETS_TEMPLATE.format(host, filename, warning = WARNING_DEFAULT / 100, critical = CRITICAL_DEFAULT / 100)
     #remove last comma
     write_str = write_str[:-1]
     write_str += WIDGETS_END
@@ -143,12 +145,11 @@ def init_alerts(files):
     all_configs = Script.get_config()
     server_host = all_configs['clusterHostInfo']['ambari_server_host'][0]
     cluster_name = all_configs['clusterName']
-    filesystem_configs = all_configs['configurations']['filesystem-config']
     for filename in files:
         write_str += ALERTS_TEMPLATE.format(folder = filename,
             folder_dots = filename.replace('/', '.'),
-            warning = filesystem_configs['warning_threshold'],
-            critical = filesystem_configs['critical_threshold'])
+            warning = WARNING_DEFAULT,
+            critical = CRITICAL_DEFAULT)
     #remove last comma
     write_str = write_str[:-1]
     write_str += ALERTS_END
@@ -199,7 +200,7 @@ class Transmitter(Script):
   def print_configs(self, env):
     print(Script.get_config())
 
-  def update_alerts_metrics_and_widgets(self, env):
+  def update_alerts_metrics(self, env):
       all_configs = Script.get_config()
       configs = all_configs['clusterHostInfo']
       folders = all_configs['configurations']['filesystem-config']['folders'].split(" ")

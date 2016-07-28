@@ -38,6 +38,6 @@ curl -u <ADMIN_USERNAME>:<ADMIN_PASSWORD> -H "X-Requested-By: ambari" -X DELETE 
 ```
 With ADMIN_USERNAME, ADMIN_PASSWORD, AMBARI_SERVER_HOST, and CLUSTER_NAME subbed appropriately for your system. After restarting the Ambari Server and installing the Filesystem Monitor again through the UI, the widgets should show up and be functional. If you edited the folder settings on installation, you'll need to follow the steps in the next paragraph.
 
-By default, all hosts are tracking the /home and /tmp directory. Adding more directories to track can be done by modifying the configuration, restarting the Ambari Server to pick the metric changes up, and restarting the service. The widgets need to be updated or created from the UI.
+By default, all hosts are tracking the /home and /tmp directory. Adding more directories to track can be done by modifying the configuration, using the "update_alerts_metrics" command from the Transmitter on the Ambari Server host, restarting the Ambari Server to pick the metric and alert changes up, and restarting the service. The widgets need to be updated or created from the UI. Removing widgets and alerts can be done through the UI and the alerts API, respectively.
 
 *Code adapted from Bryan Bende's tutorials and examples*
