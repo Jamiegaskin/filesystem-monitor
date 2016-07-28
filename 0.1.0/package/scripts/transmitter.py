@@ -39,8 +39,8 @@ WIDGETS_TEMPLATE = """
             }}
           ],
           "properties": {{
-            "warning_threshold": "0.5",
-            "error_threshold": "0.8"
+            "warning_threshold": "0.7",
+            "error_threshold": "0.9"
           }}
         }},"""
 
