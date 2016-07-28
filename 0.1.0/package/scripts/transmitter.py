@@ -195,7 +195,7 @@ class Transmitter(Script):
   def status(self, env):
     check_process_status("/tmp/filesystem.pid")
   def configure(self, env):
-    self.update_alerts_metrics_and_widgets(env)
+    self.update_alerts_metrics(env)
 
   def print_configs(self, env):
     print(Script.get_config())
