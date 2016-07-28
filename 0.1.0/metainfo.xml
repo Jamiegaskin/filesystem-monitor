@@ -53,7 +53,15 @@
                      </logs>
                      <customCommands>
                     <customCommand>
-                      <name>PRINT_CONFIGS</name>
+                      <name>print_configs</name>
+                      <commandScript>
+                        <script>scripts/transmitter.py</script>
+                        <scriptType>PYTHON</scriptType>
+                        <timeout>600</timeout>
+                      </commandScript>
+                    </customCommand>
+                    <customCommand>
+                      <name>update_alerts_metrics_and_widgets</name>
                       <commandScript>
                         <script>scripts/transmitter.py</script>
                         <scriptType>PYTHON</scriptType>

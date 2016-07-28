@@ -89,11 +89,11 @@ ALERTS_TEMPLATE = """
             }},
             "warning": {{
               "text": "Usage: {{0:.1%}}",
-              "value": {{{{filesystem-config/warning_threshold}}}}
+              "value": {warning}
             }},
             "critical": {{
               "text": "Usage: {{0:.1%}}",
-              "value": {{{{filesystem-config/critical_threshold}}}}
+              "value": {critical}
             }},
             "units" : "%",
             "type": "PERCENT"
@@ -102,7 +102,7 @@ ALERTS_TEMPLATE = """
             "property_list": [
               "Hadoop:name={folder_dots}"
             ],
-            "value": "{0} * 100"
+            "value": "{{0}} * 100"
           }}
         }}
       }},"""
@@ -143,8 +143,12 @@ def init_alerts(files):
     all_configs = Script.get_config()
     server_host = all_configs['clusterHostInfo']['ambari_server_host'][0]
     cluster_name = all_configs['clusterName']
+    filesystem_configs = all_configs['configurations']['filesystem-config']
     for filename in files:
-        write_str += ALERTS_TEMPLATE.format(folder = filename, server_host = server_host, cluster_name = cluster_name)
+        write_str += ALERTS_TEMPLATE.format(folder = filename,
+            folder_dots = filename.replace('/', '.'),
+            warning = filesystem_configs['warning_threshold'],
+            critical = filesystem_configs['critical_threshold'])
     #remove last comma
     write_str = write_str[:-1]
     write_str += ALERTS_END
@@ -162,6 +166,7 @@ class Transmitter(Script):
         print("success creating /var/log/filesystem-monitor")
       except:
         print("creating /var/log/filesystem-monitor failed")
+    self.configure(env)
     print("done with custom installation step")
   def stop(self, env):
     try:
@@ -180,7 +185,6 @@ class Transmitter(Script):
       print("no pid file to unlink")
   def start(self, env):
     print 'Start the fileystem monitor';
-    self.configure(env)
     all_configs = Script.get_config()
     config = all_configs['configurations']['filesystem-config']
     metrics_host = all_configs['clusterHostInfo']['metrics_collector_hosts'][0]
@@ -190,21 +194,24 @@ class Transmitter(Script):
   def status(self, env):
     check_process_status("/tmp/filesystem.pid")
   def configure(self, env):
-    all_configs = Script.get_config()
-    configs = all_configs['clusterHostInfo']
-    folders = all_configs['configurations']['filesystem-config']['folders'].split(" ")
-    folders_dots = [x.replace('/', '.') for x in folders]
-    host = open("/etc/hostname").read().strip()
-    if configs['ambari_server_host'][0] == host:
-        print("Initializing Widgets")
-        init_widgets(configs['all_hosts'], folders_dots)
-        print("Initializing Metrics")
-        init_metrics(configs['all_hosts'], folders_dots)
-        print("Initializing Alerts")
-        init_alerts(folders)
+    self.update_alerts_metrics_and_widgets(env)
 
   def print_configs(self, env):
     print(Script.get_config())
+
+  def update_alerts_metrics_and_widgets(self, env):
+      all_configs = Script.get_config()
+      configs = all_configs['clusterHostInfo']
+      folders = all_configs['configurations']['filesystem-config']['folders'].split(" ")
+      folders_dots = [x.replace('/', '.') for x in folders]
+      host = open("/etc/hostname").read().strip()
+      if configs['ambari_server_host'][0] == host:
+          print("Initializing Widgets")
+          init_widgets(configs['all_hosts'], folders_dots)
+          print("Initializing Metrics")
+          init_metrics(configs['all_hosts'], folders_dots)
+          print("Initializing Alerts")
+          init_alerts(folders)
 
 if __name__ == "__main__":
   Transmitter().execute()
