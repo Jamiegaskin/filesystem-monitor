@@ -32,7 +32,7 @@ JMX_START = """{{
 JMX_END = """  ]
 }
 """
-HOST, PORT = '', sys.argv[3]
+HOST, PORT = '', int(sys.argv[3])
 
 file_info = sys.argv[4:]
 num_files = len(file_info) / 2
