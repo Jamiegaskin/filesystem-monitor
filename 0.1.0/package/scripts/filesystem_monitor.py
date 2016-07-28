@@ -4,6 +4,7 @@ import time
 import requests
 import socket
 import threading
+import json
 
 print("Starting up")
 """
@@ -27,7 +28,7 @@ METRIC_TEMPLATE = ('{{'
         ']'
 '}}')
 HEADER = {'Content-Type': 'application/json'}
-JMX_START = """{{
+JMX_START = """{
   "beans": [ """
 JMX_END = """  ]
 }
@@ -64,11 +65,10 @@ def clear_memoizer():
 def was_modified_within(filename, interval):
     return time.time() - os.path.getmtime(filename) < interval
 
-def send_to_metrics(filename, size, maxsize):
+def send_to_metrics(filename, size_percent):
     #import pdb; pdb.set_trace()
     curr_time = int(time.time() * 1000) #convert to ms
     metric_name = hostname + filename
-    size_percent = size / maxsize
     json_data = METRIC_TEMPLATE.format(curr_time,
         metric_name, curr_time, curr_time, size_percent,
         hostname)
@@ -88,11 +88,12 @@ def calc_and_send_metrics():
         clear_memoizer()
         for filename, maxsize in files.iteritems():
             size = folder_size_memoize(filename)
+            size_percent = size / maxsize
             filename_dots = filename.replace('/', '.')
-            file_sizes[filename_dots] = size
+            file_sizes[filename_dots] = size_percent
             try:
                 #print("sending to metrics: ", filename, METRICS_URL)
-                send_to_metrics(filename_dots, size, maxsize)
+                send_to_metrics(filename_dots, size_percent)
             except:
                 print("Send to metrics failed", sys.exc_info())
         end = time.time()
@@ -110,6 +111,7 @@ def metrics_server():
         request = client_connection.recv(1024)
         print (request)
         http_response = JMX_START + json.dumps(file_sizes, sort_keys=True, indent=4) + JMX_END
+        print (http_response)
         client_connection.sendall(http_response)
         client_connection.close()
 
