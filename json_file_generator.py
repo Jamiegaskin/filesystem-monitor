@@ -26,7 +26,7 @@ WIDGETS_TEMPLATE = """
           "metrics": [
             {{
               "name": "{host}.percentOK._avg",
-              "metric_path": "metrics/filesystem/{0}.percentOK._avg",
+              "metric_path": "metrics/filesystem/{host}.percentOK._avg",
               "service_name": "FILESYSTEM_MONITOR",
               "component_name": "TRANSMITTER"
             }}
@@ -34,7 +34,7 @@ WIDGETS_TEMPLATE = """
           "values": [
             {{
               "name": "/{host} Percent OK",
-              "value": "${{{0}.percentOK._avg}}"
+              "value": "${{{host}.percentOK._avg}}"
             }}
           ],
           "properties": {{
@@ -70,7 +70,7 @@ FILEPATH = "/var/lib/ambari-server/resources/common-services/FILESYSTEM_MONITOR/
 def init_widgets(hosts):
     write_str = WIDGETS_START
     for host in hosts:
-        write_str += WIDGETS_TEMPLATE.format(host, filename, warning = WARNING_DEFAULT, critical = CRITICAL_DEFAULT)
+        write_str += WIDGETS_TEMPLATE.format(host = host, warning = WARNING_DEFAULT, critical = CRITICAL_DEFAULT)
     #remove last comma
     write_str = write_str[:-1]
     write_str += WIDGETS_END

@@ -5,7 +5,7 @@
   <property>
     <name>check_interval</name>
     <value>60</value>
-    <description>How often in seconds the program checks and transmits size of all tracked directories.</description>
+    <description>How often in seconds the program checks and transmits filesystem status information.</description>
   </property>
   <property>
     <name>port</name>
@@ -13,20 +13,13 @@
     <description>The port the metrics are broadcasted to by the Transmitters</description>
   </property>
   <property>
-    <name>folders</name>
-    <value>/home /tmp</value>
-    <description>List all directories to track. Requires full path names as space seperated values (ex "/home /tmp /usr")</description>
-    <value-attributes>
-      <type>multiLine</type>
-    </value-attributes>
+    <name>threshold_warning</name>
+    <value>70</value>
+    <description>Percent threshold for warning (0-100)</description>
   </property>
   <property>
-    <name>folder_sizes</name>
-    <value>1073741824 1073741824</value>
-    <description>List all folder max sizes in bytes as space seperated values. Must be in same order as folders.</description>
-    <value-attributes>
-      <type>string</type>
-      <type>multiLine</type>
-    </value-attributes>
+    <name>threshold_critical</name>
+    <value>90</value>
+    <description>Percent threshold for critical (0-100)</description>
   </property>
 </configuration>

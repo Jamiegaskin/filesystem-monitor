@@ -5,7 +5,7 @@
         <service>
             <name>FILESYSTEM_MONITOR</name>
             <displayName>Filesystem Monitor</displayName>
-            <comment>A custom tool to monitor folder sizes on hosts in Ambari</comment>
+            <comment>A custom tool to monitor filesystems on hosts in Ambari</comment>
             <version>0.1.0</version>
             <components>
 
@@ -29,9 +29,9 @@
                             <primary>true</primary>
                         </log>
                     </logs>
-
+                    <!-- for debugging
                     <customCommands>
-                        <!-- for debugging
+
                             <customCommand>
                                 <name>print_configs</name>
                                 <commandScript>
@@ -40,17 +40,9 @@
                                     <timeout>600</timeout>
                                 </commandScript>
                             </customCommand>
-                        -->
-                        <customCommand>
-                            <name>update_alerts_metrics</name>
-                            <commandScript>
-                                <script>scripts/transmitter.py</script>
-                                <scriptType>PYTHON</scriptType>
-                                <timeout>600</timeout>
-                            </commandScript>
-                        </customCommand>
-                    </customCommands>
 
+                    </customCommands>
+                    -->
                 </component>
             </components>
             <osSpecifics>

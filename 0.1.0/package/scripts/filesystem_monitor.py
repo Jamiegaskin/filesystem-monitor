@@ -9,7 +9,8 @@ import json
 
 print("Starting up")
 """
-ARGS: refresh_interval (seconds), metrics hostname, metrics send port
+ARGS: refresh_interval (seconds), metrics hostname, metrics send port,
+        warning threshold, critical threshold
 """
 print(sys.argv)
 LABELS = ['1K-blocks', 'Used', 'Available', 'Use%', 'Mounted on']
@@ -36,7 +37,7 @@ JMX_END = """  ]
 }
 """
 HOST, PORT = '', int(sys.argv[3])
-
+WARNING, CRITICAL = int(sys.argv[4]), int(sys.argv[5])
 
 hostname = open("/etc/hostname", "r").read().strip()
 
@@ -53,7 +54,7 @@ def get_filesystems():
                 info[label] = val
             else:
                 info[label] = int(val.replace('%', ''))
-        filesystems[fs_arr[0]] = info    
+        filesystems[fs_arr[0]] = info
     return filesystems
 
 def send_to_metrics(filesystem_name, size_percent):
@@ -84,6 +85,27 @@ def calc_and_send_metrics():
                 print("Send to metrics failed", sys.exc_info())
         time.sleep(REFRESH_INTERVAL)
 
+def get_jmx_metrics():
+    ok = []
+    warning = []
+    critical = []
+    for name, info in filesystems.iteritems():
+        if info['Use%'] > CRITICAL:
+            critical.append(name)
+        elif info['Use%'] > WARNING:
+            warning.append(name)
+        else:
+            ok.append(name)
+    if critical:
+        status = 2
+    elif warning:
+        status = 1
+    else:
+        status = 0
+    return {'status_code': status, 'ok_filesystems': ok,
+            'warning_filesystems': warning, 'critical_filesystems': critical}
+
+
 def metrics_server():
     global filesystems
     print("Starting metrics server")
@@ -94,13 +116,9 @@ def metrics_server():
     while True:
         client_connection, client_address = listen_socket.accept()
         request = client_connection.recv(1024)
-        filesystem = request.split()[1][1:]
-        if filesystem not in filesystems:
-            print("Could not find ", filesystem)
-        else:
-            http_response = JMX_START + json.dumps(filesystems[filesystem], sort_keys=True, indent=4) + JMX_END
-            print (http_response)
-            client_connection.sendall(http_response)
+        http_response = JMX_START + json.dumps(filesystems[filesystem], sort_keys=True, indent=4) + JMX_END
+        print (http_response)
+        client_connection.sendall(http_response)
         client_connection.close()
 
 pid = str(os.getpid())
