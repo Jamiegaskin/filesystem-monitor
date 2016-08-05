@@ -1,0 +1,46 @@
+{
+    "FILESYSTEM_MONITOR": {
+        "TRANSMITTER": [
+            {
+                "name": "filesystem_status",
+                "label": "Filesystem Status",
+                "description": "This alert triggers whenever a filesystem passes a threshold",
+                "interval": 1,
+                "scope": "ANY",
+                "enabled": true,
+                "source": {
+                    "type": "METRIC",
+                    "uri": {
+                        "http": "{{filesystem-config/port}}",
+                        "default_port": 6423,
+                        "connection_timeout": 5.0
+                    },
+                    "reporting": {
+                        "ok": {
+                            "text": "OK: {1}\n{2}\n{3}",
+                            "value": 0
+                        },
+                        "warning": {
+                            "text": "OK: {1}\n{2}\n{3}",
+                            "value": 1
+                        },
+                        "critical": {
+                            "text": "OK: {1}\n{2}\n{3}",
+                            "value": 2
+                        },
+                        "type": "STATUS"
+                    },
+                    "jmx": {
+                        "property_list": [
+                            "/status_code"
+                            "/ok_filesystems"
+                            "/warning_filesystems"
+                            "/critical_filesystems"
+                        ],
+                        "value": "{0}"
+                    }
+                }
+            },
+        ]
+    }
+}

@@ -1,3 +1,4 @@
+import subprocess
 import sys
 import os
 import time
@@ -8,9 +9,10 @@ import json
 
 print("Starting up")
 """
-ARGS: refresh_interval (seconds), metrics hostname, metrics send port, files-to-track, file-sizes
+ARGS: refresh_interval (seconds), metrics hostname, metrics send port
 """
 print(sys.argv)
+LABELS = ['1K-blocks', 'Used', 'Available', 'Use%', 'Mounted on']
 REFRESH_INTERVAL = int(sys.argv[1]) #seconds
 METRICS_URL = "http://{0}:6188/ws/v1/timeline/metrics".format(sys.argv[2])
 METRIC_TEMPLATE = ('{{'
@@ -35,40 +37,29 @@ JMX_END = """  ]
 """
 HOST, PORT = '', int(sys.argv[3])
 
-file_info = sys.argv[4:]
-num_files = len(file_info) / 2
-file_names = file_info[:num_files]
-file_max_sizes = [float(x) for x in file_info[num_files:]]
-files = dict(zip(file_names, file_max_sizes))
-folder_memoizer = {}
-file_sizes = {}
 
 hostname = open("/etc/hostname", "r").read().strip()
 
-def folder_size_memoize(folder='.'):
-    if folder in folder_memoizer:
-        return folder_memoizer[folder]
-    total_size = os.path.getsize(folder)
-    for item in os.listdir(folder):
-        itempath = os.path.join(folder, item)
-        if os.path.isfile(itempath):
-            total_size += os.path.getsize(itempath)
-        elif os.path.isdir(itempath):
-            total_size += folder_size_memoize(itempath)
-    return total_size
 
-def clear_memoizer():
-    for folder in list(folder_memoizer.keys()):
-        if was_modified_within(folder, REFRESH_INTERVAL):
-            del folder_memoizer[folder]
+def get_filesystems():
+    df = subprocess.Popen(["df", "-P"], stdout=subprocess.PIPE)
+    output = df.stdout.read().decode().strip().split("\n")[1:]
+    filesystems = {}
+    for fs in output:
+        fs_arr = fs.split()
+        info = {}
+        for label, val in zip(LABELS, fs_arr[1:]):
+            if label == 'Mounted on':
+                info[label] = val
+            else:
+                info[label] = int(val.replace('%', ''))
+        filesystems[fs_arr[0]] = info    
+    return filesystems
 
-def was_modified_within(filename, interval):
-    return time.time() - os.path.getmtime(filename) < interval
-
-def send_to_metrics(filename, size_percent):
+def send_to_metrics(filesystem_name, size_percent):
     #import pdb; pdb.set_trace()
     curr_time = int(time.time() * 1000) #convert to ms
-    metric_name = hostname + filename
+    metric_name = hostname + "_" + filesystem_name
     json_data = METRIC_TEMPLATE.format(curr_time,
         metric_name, curr_time, curr_time, size_percent,
         hostname)
@@ -81,26 +72,20 @@ def send_to_metrics(filename, size_percent):
         print("status not 200!")
 
 def calc_and_send_metrics():
-    global file_sizes
+    global filesystems
     print("Starting metrics loop")
     while(True):
-        start = time.time()
-        clear_memoizer()
-        for filename, maxsize in files.iteritems():
-            size = folder_size_memoize(filename)
-            size_percent = size / maxsize
-            filename_dots = filename.replace('/', '.')
-            file_sizes[filename_dots] = size_percent
+        filesystems = get_filesystems()
+        for name, info in filesystems.iteritems():
             try:
                 #print("sending to metrics: ", filename, METRICS_URL)
-                send_to_metrics(filename_dots, size_percent)
+                send_to_metrics(name, info['Use%'])
             except:
                 print("Send to metrics failed", sys.exc_info())
-        end = time.time()
-        time.sleep(max(REFRESH_INTERVAL - (end - start), 0))
+        time.sleep(REFRESH_INTERVAL)
 
 def metrics_server():
-    global file_sizes
+    global filesystems
     print("Starting metrics server")
     listen_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     listen_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -109,10 +94,13 @@ def metrics_server():
     while True:
         client_connection, client_address = listen_socket.accept()
         request = client_connection.recv(1024)
-        print (request)
-        http_response = JMX_START + json.dumps(file_sizes, sort_keys=True, indent=4) + JMX_END
-        print (http_response)
-        client_connection.sendall(http_response)
+        filesystem = request.split()[1][1:]
+        if filesystem not in filesystems:
+            print("Could not find ", filesystem)
+        else:
+            http_response = JMX_START + json.dumps(filesystems[filesystem], sort_keys=True, indent=4) + JMX_END
+            print (http_response)
+            client_connection.sendall(http_response)
         client_connection.close()
 
 pid = str(os.getpid())
