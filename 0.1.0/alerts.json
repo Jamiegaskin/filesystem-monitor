@@ -17,15 +17,15 @@
                     },
                     "reporting": {
                         "ok": {
-                            "text": "OK: {1}, Warning: {2}\nCritical: {3}",
+                            "text": "OK: {1}\nWarning: {2}\nCritical: {3}",
                             "value": 0
                         },
                         "warning": {
-                            "text": "OK: {1}, Warning: {2}, Critical: {3}",
+                            "text": "OK: {1}\nWarning: {2}\nCritical: {3}",
                             "value": 1
                         },
                         "critical": {
-                            "text": "OK: {1}, Warning: {2}, Critical: {3}",
+                            "text": "OK: {1}\nWarning: {2}\nCritical: {3}",
                             "value": 2
                         },
                         "type": "STATUS"
