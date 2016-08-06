@@ -4,6 +4,10 @@ Linux filesystem size monitor built for Ambari integration. Ambari service that 
 Built and tested on Centos 6.4 and Ambari 2.2.1 with Python 2.6.6
 
 ## Installation
+The setup here requires the "requests" module for Python.
+```
+yum install python-requests.noarch
+```
 From the ambari server host, get the files.
 ```
 git clone https://github.com/Jamiegaskin/filesystem-monitor
