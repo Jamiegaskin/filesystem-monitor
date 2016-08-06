@@ -17,30 +17,30 @@
                     },
                     "reporting": {
                         "ok": {
-                            "text": "OK: {1}\n{2}\n{3}",
+                            "text": "OK: {1}, Warning: {2}\nCritical: {3}",
                             "value": 0
                         },
                         "warning": {
-                            "text": "OK: {1}\n{2}\n{3}",
+                            "text": "OK: {1}, Warning: {2}, Critical: {3}",
                             "value": 1
                         },
                         "critical": {
-                            "text": "OK: {1}\n{2}\n{3}",
+                            "text": "OK: {1}, Warning: {2}, Critical: {3}",
                             "value": 2
                         },
                         "type": "STATUS"
                     },
                     "jmx": {
                         "property_list": [
-                            "/status_code"
-                            "/ok_filesystems"
-                            "/warning_filesystems"
+                            "/status_code",
+                            "/ok_filesystems",
+                            "/warning_filesystems",
                             "/critical_filesystems"
                         ],
                         "value": "{0}"
                     }
                 }
-            },
+            }
         ]
     }
 }

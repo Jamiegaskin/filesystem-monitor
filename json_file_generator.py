@@ -1,7 +1,7 @@
 import requests
 
 VERSION = "0.1.0"
-WARNING_DEFAULT = 0
+WARNING_DEFAULT = .99
 CRITICAL_DEFAULT = .5
 
 WIDGETS_START = """{
@@ -19,7 +19,7 @@ WIDGETS_END = """
 """
 WIDGETS_TEMPLATE = """
         {{
-          "widget_name": "{host} Filesystem Status",
+          "widget_name": "{host} Filesystem Percent OK",
           "description": "What percent of filesystems are OK",
           "widget_type": "GAUGE",
           "is_visible": true,
