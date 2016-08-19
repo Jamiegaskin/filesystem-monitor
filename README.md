@@ -1,5 +1,5 @@
 # filesystem-monitor
-Linux filesystem size monitor built for Ambari integration. Ambari service that monitors size of directories on a host machine in a cluster and sends the info to Ambari Metrics.
+Linux filesystem size monitor built for Ambari integration. Ambari service that monitors size of filesystems on a host machine in a cluster and sends the info to Ambari Metrics.
 
 Built and tested on Centos 6.4 and Ambari 2.2.1 with Python 2.6.6
 

@@ -41,7 +41,7 @@ class Transmitter(Script):
   def start(self, env):
     print 'Start the fileystem monitor';
     all_configs = Script.get_config()
-    print(all_configs)
+    #print(all_configs)
     config = all_configs['configurations']['filesystem-config']
     metrics_host = all_configs['clusterHostInfo']['metrics_collector_hosts'][0]
     call_list = ["python",
