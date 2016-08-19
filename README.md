@@ -46,4 +46,10 @@ ambari-server restart
 
 Installation can now be completed by adding the service "Filesystem Monitor".
 
+## Known Issues:
+- Widgets must be modified from the web UI after initialization. The widgets.json file doesn't do anything after the service is installed.
+- Similarly with alerts, they must be modified from the UI or the alerts API
+- Sometimes not all metrics in the metrics.json file show up in the web UI. Sometimes inserting a dummy metric at the start or end will solve this problem, but not always.
+- If you are having trouble installing python-requests due to file conflicts, running `yum clean all` then `yum update` often fixes the issue.
+
 *Code adapted from Bryan Bende's tutorials and examples*
